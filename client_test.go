@@ -252,6 +252,22 @@ func Test_client_Get(t *testing.T) {
 			)); diff != "" {
 				t.Errorf("Get() mismatch (-want +got):\n%s", diff)
 			}
+
+			// Additional validation for cookie test case
+			if tt.name == "Expect a response with cookies" {
+				// Verify response contains cookies (httpbin.org/cookies echoes back cookies in response body)
+				if got.Solution.Response == "" {
+					t.Error("Expected response body to contain cookie data, got empty response")
+				}
+				// Verify that cookies were returned by the server
+				if got.Solution.Cookies == nil {
+					t.Error("Expected Solution.Cookies to be populated, got nil")
+				}
+				// Validate that we actually sent cookies and they were returned
+				if len(got.Solution.Cookies) < 2 {
+					t.Errorf("Expected at least 2 cookies to be sent and returned, got %d", len(got.Solution.Cookies))
+				}
+			}
 		})
 	}
 }
@@ -402,6 +418,22 @@ func Test_client_Post(t *testing.T) {
 				"Solution.Response",
 			)); diff != "" {
 				t.Errorf("Post() mismatch (-want +got):\n%s", diff)
+			}
+
+			// Additional validation for cookie test case
+			if tt.name == "Expect a response with cookies" {
+				// Verify response contains data (httpbin.org/anything echoes back request details)
+				if got.Solution.Response == "" {
+					t.Error("Expected response body to contain request data, got empty response")
+				}
+				// Verify that cookies were returned by the server
+				if got.Solution.Cookies == nil {
+					t.Error("Expected Solution.Cookies to be populated, got nil")
+				}
+				// Validate that we actually sent cookies and they were returned
+				if len(got.Solution.Cookies) < 2 {
+					t.Errorf("Expected at least 2 cookies to be sent and returned, got %d", len(got.Solution.Cookies))
+				}
 			}
 		})
 	}
