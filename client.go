@@ -154,7 +154,7 @@ func (c *client) DestroySession(ctx context.Context, session uuid.UUID) error {
 }
 
 // Get makes an HTTP GET request using flaresolverr proxy
-// Session and Cookies can be nil.
+// Session can be uuid.Nil. Cookies can be nil, empty, or omitted.
 func (c *client) Get(ctx context.Context, u string, session uuid.UUID, cookies []*Cookie, proxy ...string) (*Response, error) {
 	cmd := &flaresolverrCommand{
 		Cmd:               CommandRequestget,
@@ -173,7 +173,7 @@ func (c *client) Get(ctx context.Context, u string, session uuid.UUID, cookies [
 
 // Post makes an HTTP POST request using flaresolverr proxy
 // data must be an application/x-www-form-urlencoded string.
-// Session and Cookies can be nil.
+// Session can be uuid.Nil. Cookies can be nil, empty, or omitted.
 func (c *client) Post(ctx context.Context, u string, session uuid.UUID, data string, cookies []*Cookie, proxy ...string) (*Response, error) {
 	cmd := &flaresolverrCommand{
 		Cmd:               CommandRequestpost,
